@@ -14,23 +14,25 @@
 # GNU General Public License or the MIT License for more details.              #
 ################################################################################
 
-from django.conf.urls.defaults import *
-from django.contrib import admin
+from django.db import models
+from django.conf import settings
 
-admin.autodiscover()
+class Problem(models.Model):
+	file = models.FilePathField(path=settings.PROBLEM_DIRECTORY, recursive=True, match=".*\.py")
+	total = models.FloatField(null=True)
 
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+class ProblemGrade(models.Model):
+	score = models.FloatField()
+	answer = models.TextField(null=True)
+	problem = models.ForeignKey('Problem')
 
-urlpatterns = patterns('',
-    # Example:
-    # (r'^fourU/', include('fourU.foo.urls')),
+class Assignment(models.Model):
+	startDate = models.DateTimeField()
+	endDate = models.DateTimeField()
+	total = models.FloatField(null=True)
+	problems = models.ManyToManyField('Problem')
 
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    (r'^admin/(.*)', admin.site.root),
-)
+class AssignmentGrade(models.Model):
+	score = models.FloatField(null=True)
+	isTaken = models.BooleanField()
+	assignment = models.ForeignKey('Assignment')

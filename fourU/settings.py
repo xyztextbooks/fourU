@@ -16,6 +16,10 @@
 
 # Django settings for fourU project.
 
+import os
+
+rootPath=os.path.realpath(os.curdir)
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -77,6 +81,7 @@ MIDDLEWARE_CLASSES = (
 	'django.middleware.common.CommonMiddleware',
 	'django.contrib.sessions.middleware.SessionMiddleware',
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.middleware.locale.LocaleMiddleware',
 )
 
 ROOT_URLCONF = 'fourU.urls'
@@ -92,4 +97,10 @@ INSTALLED_APPS = (
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.sites',
+	'django.contrib.admin',
+	'fourU.assignments',
+	'fourU.courses',
+	'fourU.users',
 )
+
+PROBLEM_DIRECTORY = os.path.join(rootPath, 'problems')
