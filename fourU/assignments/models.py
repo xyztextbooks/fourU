@@ -18,21 +18,59 @@ from django.db import models
 from django.conf import settings
 
 class Problem(models.Model):
+	"""
+	A database representation of one problem, intended to match 1-to-1 with an xxx.py problem file from a library.
+	
+	``file``: contains the relative path to a problem file from ``settings.PROBLEM_DIRECTORY``;
+	can only be of the form \*.py
+	
+	``total``: the maximum number of points that can be earned for this problem
+	"""
 	file = models.FilePathField(path=settings.PROBLEM_DIRECTORY, recursive=True, match=".*\.py")
 	total = models.FloatField(null=True)
 
 class ProblemGrade(models.Model):
+	"""
+	One student's grade on a problem.
+	
+	``score``: decimal number of points received for this problem
+	
+	``answer``: textual representation of the student's answer.
+	
+	``problem``: the ``Problem`` this grade is to
+	"""
 	score = models.FloatField()
 	answer = models.TextField(null=True)
 	problem = models.ForeignKey('Problem')
 
 class Assignment(models.Model):
+	"""
+	An assignment of multiple problems to multiple students
+	
+	``startDate``: when students are allowed to begin the assignment
+	
+	``endDate``: the closing date
+	
+	``total``: the maximum number of points that can be earned for this assignment;
+	by default, the summation of the total points for each problem
+	
+	``problems``: the ``Problem``\s assigned
+	"""
 	startDate = models.DateTimeField()
 	endDate = models.DateTimeField()
 	total = models.FloatField(null=True)
 	problems = models.ManyToManyField('Problem')
 
 class AssignmentGrade(models.Model):
+	"""
+	One student's grade on an assignment.
+	
+	``score``: decimal number of points received on this assignment
+	
+	``isTaken``
+	
+	``assignment``: the ``Assignment`` this grade is to
+	"""
 	score = models.FloatField(null=True)
 	isTaken = models.BooleanField()
 	assignment = models.ForeignKey('Assignment')

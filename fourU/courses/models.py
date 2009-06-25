@@ -17,8 +17,16 @@
 from django.db import models
 
 class Course(models.Model):
+	"""
+	``name``
+	"""
 	name = models.CharField(max_length=255, primary_key=True)
 
 class Section(models.Model):
+	"""
+	``number``: e.g. 01 if section is CSC 101-01
+	
+	``course``: the ``Course`` that this section is associated with
+	"""
 	number = models.IntegerField()
 	course = models.ForeignKey('Course')

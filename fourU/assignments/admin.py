@@ -17,6 +17,7 @@
 from django.contrib import admin
 from fourU.assignments.models import Problem, ProblemGrade, Assignment, AssignmentGrade
 
+# include models in the admin interface
 admin.site.register(Problem)
 admin.site.register(ProblemGrade)
 admin.site.register(Assignment)
