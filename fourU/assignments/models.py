@@ -16,6 +16,7 @@
 
 from django.db import models
 from django.conf import settings
+from courses.models import SectionEnrollment, Section
 
 class Problem(models.Model):
 	"""
@@ -55,11 +56,14 @@ class Assignment(models.Model):
 	by default, the summation of the total points for each problem
 	
 	``problems``: the ``Problem``\s assigned
+	
+	``section``: the ``Section`` to which this is assigned
 	"""
 	startDate = models.DateTimeField()
 	endDate = models.DateTimeField()
 	total = models.FloatField(null=True)
-	problems = models.ManyToManyField('Problem')
+	problems = models.ManyToManyField(Problem)
+	section = models.ForeignKey(Section)
 
 class AssignmentGrade(models.Model):
 	"""
@@ -70,7 +74,10 @@ class AssignmentGrade(models.Model):
 	``isTaken``
 	
 	``assignment``: the ``Assignment`` this grade is to
+	
+	``section``: a ``SectionEnrollment``
 	"""
 	score = models.FloatField(null=True)
 	isTaken = models.BooleanField()
-	assignment = models.ForeignKey('Assignment')
+	assignment = models.ForeignKey(Assignment)
+	section = models.ForeignKey(SectionEnrollment)

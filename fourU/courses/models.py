@@ -15,6 +15,7 @@
 ################################################################################
 
 from django.db import models
+from users.models import CustomUser, PERMISSION_LEVEL_CHOICES
 
 class Course(models.Model):
 	"""
@@ -30,3 +31,13 @@ class Section(models.Model):
 	"""
 	number = models.IntegerField()
 	course = models.ForeignKey('Course')
+
+class SectionEnrollment(models.Model):
+	"""
+	``user``: the ``CustomUser`` enrolled in this section
+	
+	``permissionLevel``: a string indicating the level of permissions this user has for this section;
+	should be one of ``PERMISSION_LEVEL_CHOICES``
+	"""
+	user = models.ForeignKey(CustomUser)
+	permissionLevel = models.CharField(max_length=30, choices=PERMISSION_LEVEL_CHOICES)

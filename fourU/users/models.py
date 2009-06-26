@@ -22,6 +22,26 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db.models import get_model
 from django.db.models import signals
 
+PERMISSION_LEVEL_CHOICES = (
+	('Admin', 'Admin'),
+	('Professor', 'Professor'),
+	("Teacher's Assistant", 'TeacherAssistant'),
+	('Student', 'Student'),
+	('Guest', 'Guest'),
+)
+#PERMISSION_LEVEL_SORT_ORDER = {
+#	'Admin': 0,
+#	'Professor': 1,
+#	'TeacherAssistant': 2,
+#	'Student': 3,
+#	'Guest': 4,
+#}
+# same as above, but more flexible
+PERMISSION_LEVEL_SORT_ORDER = dict([(level[1], index) for index, level in enumerate(PERMISSION_LEVEL_CHOICES)])
+
+def compare_permissions(one, another):
+	return PERMISSION_LEVEL_SORT_ORDER[another] - PERMISSION_LEVEL_SORT_ORDER[one]
+
 class Address(models.Model):
 	"""
 	A standard street address.

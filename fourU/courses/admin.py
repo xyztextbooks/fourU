@@ -15,7 +15,8 @@
 ################################################################################
 
 from django.contrib import admin
-from fourU.courses.models import Course, Section
+from fourU.courses.models import Course, Section, SectionEnrollment
 
 admin.site.register(Course)
 admin.site.register(Section)
+admin.site.register(SectionEnrollment)
