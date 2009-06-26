@@ -38,6 +38,9 @@ class SectionEnrollment(models.Model):
 	
 	``permissionLevel``: a string indicating the level of permissions this user has for this section;
 	should be one of ``PERMISSION_LEVEL_CHOICES``
+	
+	``section``: the section this user is enrolled in
 	"""
 	user = models.ForeignKey(CustomUser)
 	permissionLevel = models.CharField(max_length=30, choices=PERMISSION_LEVEL_CHOICES)
+	section = models.ForeignKey(Section)
