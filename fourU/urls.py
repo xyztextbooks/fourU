@@ -24,13 +24,13 @@ admin.autodiscover()
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Example:
-    # (r'^fourU/', include('fourU.foo.urls')),
+	# Example:
+	# (r'^fourU/', include('fourU.foo.urls')),
 
-    # Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
-    # to INSTALLED_APPS to enable admin documentation:
-    # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
+	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
+	# to INSTALLED_APPS to enable admin documentation:
+	# (r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    # Uncomment the next line to enable the admin:
-    (r'^admin/(.*)', admin.site.root),
+	# Uncomment the next line to enable the admin:
+	(r'^admin/(.*)', admin.site.root),
 )
