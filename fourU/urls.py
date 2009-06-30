@@ -16,16 +16,14 @@
 
 from django.conf.urls.defaults import *
 from django.contrib import admin
+from django.conf import settings
 
 admin.autodiscover()
-
-# Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
 
 urlpatterns = patterns('',
 	# Example:
 	# (r'^fourU/', include('fourU.foo.urls')),
+	(r'^$', 'problems.example_library.foo.index'),
 
 	# Uncomment the admin/doc line below and add 'django.contrib.admindocs' 
 	# to INSTALLED_APPS to enable admin documentation:
@@ -34,3 +32,11 @@ urlpatterns = patterns('',
 	# Uncomment the next line to enable the admin:
 	(r'^admin/(.*)', admin.site.root),
 )
+
+if settings.DEBUG:
+	import os
+	media_dir = os.path.join(os.path.dirname(__file__), 'media/')
+	
+	urlpatterns += patterns('',
+		(r'^media/(.*)$', 'django.views.static.serve', {'document_root': media_dir}),
+	)

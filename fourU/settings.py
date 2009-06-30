@@ -65,7 +65,7 @@ MEDIA_URL = ''
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+ADMIN_MEDIA_PREFIX = '/admin_media/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'e#@aso_qzx2qn^6aq)k&cmr-+o1@iuky!4*byqlria-+0c5)lc'
@@ -86,10 +86,13 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'fourU.urls'
 
+PROBLEM_DIRECTORY = os.path.join(rootPath, 'problems')
+
 TEMPLATE_DIRS = (
 	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
 	# Always use forward slashes, even on Windows.
 	# Don't forget to use absolute paths, not relative paths.
+	PROBLEM_DIRECTORY,
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -106,5 +109,3 @@ INSTALLED_APPS = (
 	'fourU.courses',
 	'fourU.users',
 )
-
-PROBLEM_DIRECTORY = os.path.join(rootPath, 'problems')
