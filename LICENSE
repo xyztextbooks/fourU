@@ -19,3 +19,6 @@ one.
 You should also have received a copy of the GNU General Public License
 along with this program in the file named "GPL". If not, see
 <http://www.gnu.org/licenses/>.
+
+This program includes the jsMath library, written by Davide P. Cervone and
+licensed under the Apache License, Version 2.0.
