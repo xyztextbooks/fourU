@@ -30,7 +30,7 @@ def index(request):
 	:Section: Solving Linear Equations
 	:Keywords: - linear equations
 	           - solving equations
-	:Text Title: MAP Intermedia Algebra
+	:Text Title: MAP Intermediate Algebra
 	:Text Edition: 1
 	:Text Author: Yoshiwara
 	:Text Section: Lesson 1
@@ -43,7 +43,7 @@ def index(request):
 		"""
 		Return True if `b` is a correct answer, as compared to `a`
 		"""
-		# TODO: this needs to be a better example, preferrably something you'd actually use
+		# TODO: this needs to be a better example, preferably something you'd actually use
 		return cmp(a, b) == 0
 	
 	if request.method == 'GET':
