@@ -14,6 +14,8 @@
 # GNU General Public License or the MIT License for more details.              #
 ################################################################################
 
+from django import forms
+
 class Problem():
 	def __init__(self, **kwargs):
 		# add any given keywords arguments as instance variables
@@ -21,7 +23,22 @@ class Problem():
 			vars(self)[arg] = kwargs[arg]
 	
 	def check_answer(self, studentAnswer, compare=None):
+		# TODO: decrement number of tries and/or increment number of attempts
+		
 		if compare:
 			return compare(self.answer, studentAnswer)
 		else:
 			return self.answer == studentAnswer
+
+class AnswerForm(forms.Form):
+	def __init__(self, queryDict=None, **kwargs):
+		# we have to make sure to call Form's __init__(), since it sets some variables we override
+		#super(AnswerForm, self).__init__(queryDict)
+		forms.Form.__init__(self, queryDict)
+		
+		# add any given keyword arguments as instance variables
+		# because the form fields aren't _really_ instance variables,
+		# we can't declare them like we do in Problem.__init__()
+		# self.fields is a magically-generated dictionary in forms.BaseForm
+		for arg in kwargs:
+			self.fields[arg] = kwargs[arg]

@@ -16,7 +16,8 @@
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
-from problems.models import Problem
+from problems.models import Problem, AnswerForm
+from django import forms
 
 import random
 
@@ -37,9 +38,16 @@ def index(request):
 	:Date: 2009
 	"""
 	def check(a, b):
-		return cmp(a, b)
+		"""
+		Return True if `b` is a correct answer, as compared to `a`
+		"""
+		# TODO: this needs to be a better example, preferrably something you'd actually use
+		return cmp(a, b) == 0
 	
 	if request.method == 'GET':
+		# FIXME: Hacky!  This whole thing needs to be restructured
+		global b, r, a, c, ans, d, answer_form, problem1
+		
 		b = random.randint(2, 5)
 		r = random.randint(1, 9)
 		a = b + r
@@ -47,7 +55,15 @@ def index(request):
 		ans = random.randint(1, 9)
 		d = (r + c) * ans
 		
+		answer_form = AnswerForm(answer=forms.CharField())
+		
 		problem1 = Problem(a=a, b=b, c=c, d=d, r=r, answer=ans)
-		return render_to_response('example_library/foo.html', {'problem1': problem1})
+		return render_to_response('example_library/foo.html', {'problem1': problem1, 'answer_form': answer_form})
 	else:
-		problem.check_answer(studentAnswer, check)
+		answer_form = AnswerForm(request.POST, answer=forms.CharField())
+		studentAnswer = request.POST['answer']
+		
+		if problem1.check_answer(studentAnswer, check):
+			pass
+		else:
+			return render_to_response('example_library/foo.html', {'problem1': problem1, 'answer_form': answer_form})
