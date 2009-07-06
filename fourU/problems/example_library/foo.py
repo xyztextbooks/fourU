@@ -47,8 +47,10 @@ def index(request):
 		return cmp(a, b) == 0
 	
 	if request.method == 'GET':
-		# FIXME: Hacky!  This whole thing needs to be restructured
-		global b, r, a, c, ans, d, answer_form, problem1
+		# we need to give the problem "state", so that it persists
+		# an alternate (and usually better) approach would be to wrap this in a class,
+		# but it seems silly in this instance, and would complicate things unnecessarily
+		global problem1
 		
 		b = random.randint(2, 5)
 		r = random.randint(1, 9)
@@ -57,15 +59,14 @@ def index(request):
 		ans = random.randint(1, 9)
 		d = (r + c) * ans
 		
-		answer_form = AnswerForm(answer=forms.CharField())
+		answer_form = AnswerForm(answer=forms.CharField(required=False))
 		
 		problem1 = Problem(a=a, b=b, c=c, d=d, r=r, answer=ans)
-		return render_to_response('example_library/foo.html', {'problem1': problem1, 'answer_form': answer_form})
-	else:
-		answer_form = AnswerForm(request.POST, answer=forms.CharField())
+	elif request.method == 'POST':
+		answer_form = AnswerForm(request.POST, answer=forms.CharField(required=False))
 		studentAnswer = request.POST['answer']
 		
 		if problem1.check_answer(studentAnswer, check):
 			pass
-		else:
-			return render_to_response('example_library/foo.html', {'problem1': problem1, 'answer_form': answer_form})
+	
+	return render_to_response('example_library/foo.html', {'problem1': problem1, 'answer_form': answer_form})
