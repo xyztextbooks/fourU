@@ -107,6 +107,7 @@ INSTALLED_APPS = (
 	'django.contrib.sessions',
 	'django.contrib.sites',
 	'django.contrib.admin',
+	'django.contrib.admindocs',
 	'fourU.assignments',
 	'fourU.courses',
 	'fourU.users',
