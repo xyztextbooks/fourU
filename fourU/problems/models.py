@@ -19,6 +19,10 @@
 from django import forms
 
 class Problem(object):
+	"""
+	A generic wrapper of things useful in displaying and grading a math problem.
+	Intended to be subclassed.
+	"""
 	def __init__(self, **kwargs):
 		# add any given keywords arguments as instance variables
 		for arg in kwargs:
@@ -35,7 +39,15 @@ class Problem(object):
 			return self.answer == answer
 
 class AnswerForm(forms.Form):
+	"""
+	A form with a variable number of fields.
+	"""
 	def __init__(self, queryDict, **kwargs):
+		"""
+		Create the form, with any number of named keyword arguments as fields.
+		For instance, to create a character field referenced by the name `answer`,
+		pass in `answer=forms.CharField()`
+		"""
 		# we have to make sure to call Form's __init__(), since it sets some variables we override
 		#super(AnswerForm, self).__init__(queryDict)
 		forms.Form.__init__(self, queryDict)

@@ -54,6 +54,9 @@ class Problem(problems.models.Problem):
 		super(Problem, self).__init__(a=a, b=b, c=c, d=d, ans=ans)
 	
 	def __str__(self, queryDict=None):
+		"""
+		Generate the appropriate forms and return a rendered html template.
+		"""
 		answerForm = AnswerForm(queryDict, answer=forms.CharField(required=False))
 		return render_to_string('example_library/foo.html', {'MEDIA_PATH_PREFIX': settings.MEDIA_PATH_PREFIX,
 		                                                     'problem1': self,
