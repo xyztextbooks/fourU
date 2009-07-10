@@ -25,7 +25,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
 	# Example:
 	# (r'^fourU/', include('fourU.foo.urls')),
-	(r'^$', 'problems.example_library.foo.index'),
 
 	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	(r'^admin/(.*)', admin.site.root),
