@@ -18,22 +18,24 @@
 
 from django import forms
 
-class Problem():
+class Problem(object):
 	def __init__(self, **kwargs):
 		# add any given keywords arguments as instance variables
 		for arg in kwargs:
 			vars(self)[arg] = kwargs[arg]
 	
-	def check_answer(self, studentAnswer, compare=None):
+	def is_correct(self, answer, compare=None, decrementGrade=True):
 		# TODO: decrement number of tries and/or increment number of attempts
+		if decrementGrade:
+			self.attempts += 1
 		
 		if compare:
-			return compare(self.answer, studentAnswer)
+			return compare(self.answer, answer)
 		else:
-			return self.answer == studentAnswer
+			return self.answer == answer
 
 class AnswerForm(forms.Form):
-	def __init__(self, queryDict=None, **kwargs):
+	def __init__(self, queryDict, **kwargs):
 		# we have to make sure to call Form's __init__(), since it sets some variables we override
 		#super(AnswerForm, self).__init__(queryDict)
 		forms.Form.__init__(self, queryDict)

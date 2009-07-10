@@ -16,14 +16,17 @@
 # GNU General Public License or the MIT License for more details.              #
 ################################################################################
 
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
-from problems.models import Problem, AnswerForm
+# imports common to all problems
+from django.conf import settings
+from django.template.loader import render_to_string
 from django import forms
+from problems.models import AnswerForm
+import problems.models
 
+# problem-specific imports
 import random
 
-def index(request):
+class Problem(problems.models.Problem):
 	"""
 	:Subject: Intermediate Algebra
 	:Chapter: Ch 01: Algebra, Mathematical Models and Problem Solving
@@ -39,19 +42,8 @@ def index(request):
 	:Institution: Los Angeles Pierce College
 	:Date: 2009
 	"""
-	def check(a, b):
-		"""
-		Return True if `b` is a correct answer, as compared to `a`
-		"""
-		# TODO: this needs to be a better example, preferably something you'd actually use
-		return cmp(a, b) == 0
-	
-	if request.method == 'GET':
-		# we need to give the problem "state", so that it persists
-		# an alternate (and usually better) approach would be to wrap this in a class,
-		# but it seems silly in this instance, and would complicate things unnecessarily
-		global problem1
-		
+	def __init__(self):
+		# calculate some values
 		b = random.randint(2, 5)
 		r = random.randint(1, 9)
 		a = b + r
@@ -59,14 +51,34 @@ def index(request):
 		ans = random.randint(1, 9)
 		d = (r + c) * ans
 		
-		answer_form = AnswerForm(answer=forms.CharField(required=False))
-		
-		problem1 = Problem(a=a, b=b, c=c, d=d, r=r, answer=ans)
-	elif request.method == 'POST':
-		answer_form = AnswerForm(request.POST, answer=forms.CharField(required=False))
-		studentAnswer = request.POST['answer']
-		
-		if problem1.check_answer(studentAnswer, check):
-			pass
+		super(Problem, self).__init__(a=a, b=b, c=c, d=d, ans=ans)
 	
-	return render_to_response('example_library/foo.html', {'problem1': problem1, 'answer_form': answer_form})
+	def __str__(self, queryDict=None):
+		answerForm = AnswerForm(queryDict, answer=forms.CharField(required=False))
+		return render_to_string('example_library/foo.html', {'MEDIA_PATH_PREFIX': settings.MEDIA_PATH_PREFIX,
+		                                                     'problem1': self,
+		                                                     'answerForm': answerForm})
+	
+	def is_correct(self, answer):
+		# longer, more explicit, way
+		#def check(a, b):
+		#	"""
+		#	Return True if `b` is a correct answer, as compared to `a`
+		#	"""
+		#	# TODO: this needs to be a better example, preferably something you'd actually use
+		#	return cmp(a, b) == 0
+		
+		# compare answer using check(), instead of default
+		#return super(Problem, self).is_correct(answer, check)
+		
+		# shorter, but slightly more confusing, way
+		return super(Problem, self).is_correct(answer, lambda a, b: cmp(a, b) == 0)
+
+# are we running this standalone, rather than as a module?
+def main():
+	print Problem()
+	return
+
+if __name__ == '__main__' or __name__ == '__console__':
+	import sys
+	sys.exit(main())
