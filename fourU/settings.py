@@ -64,6 +64,11 @@ MEDIA_ROOT = ''
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = ''
 
+# Path to prefix media files with.  Used primarily when viewing problems in a
+# local environment.
+#MEDIA_PATH_PREFIX = '/home/pearson/Documents/fourU/fourU'
+MEDIA_PATH_PREFIX = ''
+
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
@@ -108,6 +113,7 @@ INSTALLED_APPS = (
 	'django.contrib.sites',
 	'django.contrib.admin',
 	'django.contrib.admindocs',
+	'fourU',
 	'fourU.assignments',
 	'fourU.courses',
 	'fourU.users',
