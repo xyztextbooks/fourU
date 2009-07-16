@@ -15,3 +15,33 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See either the         #
 # GNU General Public License or the MIT License for more details.              #
 ################################################################################
+
+from django.views.generic.list_detail import object_list, object_detail
+
+from courses.models import Course, Section
+from assignments.models import Assignment, Problem
+
+def course_detail(request, courseSlug):
+	course = Course.objects.get(slug=courseSlug)
+	sections = Section.objects.filter(course__slug=courseSlug)
+	return object_list(request, sections, extra_context={'course': course})
+
+def section_detail(request, courseSlug, sectionSlug):
+	section = Section.objects.filter(course__slug=courseSlug).get(number=sectionSlug)
+	assignments = section.assignment_set.all()
+	return object_list(request, assignments, extra_context={'course': section.course,
+	                                                        'section': section,})
+
+def assignment_detail(request, courseSlug, sectionSlug, assignmentSlug):
+	section = Section.objects.filter(course__slug=courseSlug).get(number=sectionSlug)
+	assignment = section.assignment_set.get(slug=assignmentSlug)
+	problems = assignment.problems.all()
+	return object_list(request, problems, extra_context={'course': section.course,
+	                                                     'section': section,
+	                                                     'assignment': assignment,})
+
+def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum):
+	section = Section.objects.filter(course__slug=courseSlug).get(number=sectionSlug)
+	assignment = section.assignment_set.get(slug=assignmentSlug)
+	problem = assignment.problems.get(number=problemNum)
+	return object_detail(request, Problem.objects.all(), problem.id)

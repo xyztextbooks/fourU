@@ -21,6 +21,8 @@
 import os
 
 rootPath=os.path.realpath(os.curdir)
+def abs_path(path):
+	return os.path.join(rootPath,path)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -93,13 +95,14 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'fourU.urls'
 
-PROBLEM_DIRECTORY = os.path.join(rootPath, 'problems')
+PROBLEM_DIRECTORY = abs_path('problems')
 
 TEMPLATE_DIRS = (
 	# Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
 	# Always use forward slashes, even on Windows.
 	# Don't forget to use absolute paths, not relative paths.
 	PROBLEM_DIRECTORY,
+	abs_path('templates'),
 )
 
 AUTHENTICATION_BACKENDS = (

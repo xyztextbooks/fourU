@@ -19,12 +19,14 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
 from django.conf import settings
+from django.views.generic.list_detail import object_list
+
+from courses.models import Course
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-	# Example:
-	# (r'^fourU/', include('fourU.foo.urls')),
+	(r'^courses/', include('courses.urls')),
 
 	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	(r'^admin/(.*)', admin.site.root),

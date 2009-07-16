@@ -53,14 +53,15 @@ class Problem(problems.models.Problem):
 		
 		super(Problem, self).__init__(a=a, b=b, c=c, d=d, ans=ans)
 	
-	def __str__(self, queryDict=None):
+	def __str__(self, standAlone=False, queryDict=None):
 		"""
 		Generate the appropriate forms and return a rendered html template.
 		"""
 		answerForm = AnswerForm(queryDict, answer=forms.CharField(required=False))
 		return render_to_string('example_library/foo.html', {'MEDIA_PATH_PREFIX': settings.MEDIA_PATH_PREFIX,
 		                                                     'problem1': self,
-		                                                     'answerForm': answerForm})
+		                                                     'answerForm': answerForm,
+		                                                     'standAlone': standAlone,})
 	
 	def is_correct(self, answer):
 		# longer, more explicit, way
@@ -79,7 +80,7 @@ class Problem(problems.models.Problem):
 
 # are we running this standalone, rather than as a module?
 def main():
-	print Problem()
+	print Problem().__str__(standAlone=True)
 	return
 
 if __name__ == '__main__' or __name__ == '__console__':

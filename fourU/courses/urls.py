@@ -16,40 +16,15 @@
 # GNU General Public License or the MIT License for more details.              #
 ################################################################################
 
-from django.db import models
-from users.models import CustomUser, PERMISSION_LEVEL_CHOICES
+from django.conf.urls.defaults import *
+from django.views.generic.list_detail import object_list
 
-class Course(models.Model):
-	"""
-	``name``
-	"""
-	name = models.CharField(max_length=255,)
-	slug = models.SlugField(unique=True,)
-	
-	def __str__(self):
-		return self.name
+from courses.models import Course
 
-class Section(models.Model):
-	"""
-	``number``: e.g. 01 if section is CSC 101-01
-	
-	``course``: the ``Course`` that this section is associated with
-	"""
-	number = models.IntegerField()
-	course = models.ForeignKey('Course')
-	
-	def __str__(self):
-		return str(self.number)
-
-class SectionEnrollment(models.Model):
-	"""
-	``user``: the ``CustomUser`` enrolled in this section
-	
-	``permissionLevel``: a string indicating the level of permissions this user has for this section;
-	should be one of ``PERMISSION_LEVEL_CHOICES``
-	
-	``section``: the section this user is enrolled in
-	"""
-	user = models.ForeignKey(CustomUser)
-	permissionLevel = models.CharField(max_length=30, choices=PERMISSION_LEVEL_CHOICES)
-	section = models.ForeignKey(Section)
+urlpatterns = patterns('',
+	(r'^$', object_list, {'queryset': Course.objects.all(),}),
+	(r'^(?P<courseSlug>[\w-]+)/$', 'courses.views.course_detail'),
+	(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/$', 'courses.views.section_detail'),
+	(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/$', 'courses.views.assignment_detail'),
+	(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/(?P<problemNum>\d+)/$', 'courses.views.problem_detail'),
+)

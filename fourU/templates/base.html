@@ -1,4 +1,3 @@
-{% if standAlone %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
 <head>
@@ -6,11 +5,8 @@
     <script type="text/javascript" src="{{ MEDIA_PATH_PREFIX }}/media/js/jsMath/easy/load.js">
     </script>
 </head>
-<body>
-{% endif %}
+<body bgcolor="silver">
     {% block content %}
     {% endblock %}
-{% if standAlone %}
 </body>
 </html>
-{% endif %}

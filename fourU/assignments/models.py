@@ -32,7 +32,12 @@ class Problem(models.Model):
 	file = models.FilePathField(path=settings.PROBLEM_DIRECTORY, recursive=True, match=".*[^(__){1}]\.py$")
 	total = models.FloatField(null=True)
 	number = models.PositiveSmallIntegerField()
-
+	
+	def __str__(self):
+		# FIXME: NAOW!  No hardcoding!
+		from problems.example_library import foo
+		problem = foo.Problem()
+		return str(problem)
 
 class ProblemGrade(models.Model):
 	"""
@@ -70,6 +75,9 @@ class Assignment(models.Model):
 	total = models.FloatField(null=True)
 	problems = models.ManyToManyField(Problem)
 	section = models.ForeignKey(Section)
+	
+	def __str__(self):
+		return self.name
 
 class AssignmentGrade(models.Model):
 	"""
