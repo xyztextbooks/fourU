@@ -19,8 +19,11 @@
 from django.contrib import admin
 from fourU.assignments.models import Problem, ProblemGrade, Assignment, AssignmentGrade
 
-# include models in the admin interface
+class AssignmentAdmin(admin.ModelAdmin):
+	prepopulated_fields = {'slug': ('name',)}
+
+
 admin.site.register(Problem)
 admin.site.register(ProblemGrade)
-admin.site.register(Assignment)
+admin.site.register(Assignment, AssignmentAdmin)
 admin.site.register(AssignmentGrade)

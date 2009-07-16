@@ -19,6 +19,15 @@
 from django.contrib import admin
 from fourU.courses.models import Course, Section, SectionEnrollment
 
-admin.site.register(Course)
+class SectionInline(admin.StackedInline):
+	model = Section
+	extra = 1
+
+class CourseAdmin(admin.ModelAdmin):
+	prepopulated_fields = {'slug': ('name',)}
+	inlines = [SectionInline,]
+
+
+admin.site.register(Course, CourseAdmin)
 admin.site.register(Section)
 admin.site.register(SectionEnrollment)

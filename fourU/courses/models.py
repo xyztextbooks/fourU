@@ -23,7 +23,8 @@ class Course(models.Model):
 	"""
 	``name``
 	"""
-	name = models.CharField(max_length=255, primary_key=True)
+	name = models.CharField(max_length=255,)
+	slug = models.SlugField(unique=True,)
 
 class Section(models.Model):
 	"""

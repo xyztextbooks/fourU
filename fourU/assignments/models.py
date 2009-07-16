@@ -29,8 +29,10 @@ class Problem(models.Model):
 	
 	``total``: the maximum number of points that can be earned for this problem
 	"""
-	file = models.FilePathField(path=settings.PROBLEM_DIRECTORY, recursive=True, match=".*\.py")
+	file = models.FilePathField(path=settings.PROBLEM_DIRECTORY, recursive=True, match=".*[^(__){1}]\.py$")
 	total = models.FloatField(null=True)
+	number = models.PositiveSmallIntegerField()
+
 
 class ProblemGrade(models.Model):
 	"""
@@ -61,6 +63,8 @@ class Assignment(models.Model):
 	
 	``section``: the ``Section`` to which this is assigned
 	"""
+	name = models.CharField(max_length=255, primary_key=True)
+	slug = models.SlugField()
 	startDate = models.DateTimeField()
 	endDate = models.DateTimeField()
 	total = models.FloatField(null=True)
