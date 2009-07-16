@@ -16,6 +16,8 @@
 # GNU General Public License or the MIT License for more details.              #
 ################################################################################
 
+import os
+import imp
 from django.db import models
 from django.conf import settings
 from courses.models import SectionEnrollment, Section
@@ -34,9 +36,16 @@ class Problem(models.Model):
 	number = models.PositiveSmallIntegerField()
 	
 	def __str__(self):
-		# FIXME: NAOW!  No hardcoding!
-		from problems.example_library import foo
-		problem = foo.Problem()
+		# get the path up to the problem file
+		path, filename = os.path.split(self.file)
+		# chop off the extension
+		filename = os.path.splitext(filename)[0]
+		
+		# import the problem file
+		file, pathname, description = imp.find_module(filename, [path])
+		module = imp.load_module(filename, file, pathname, description)
+		
+		problem = module.Problem()
 		return str(problem)
 
 class ProblemGrade(models.Model):
