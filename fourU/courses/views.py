@@ -22,17 +22,26 @@ from courses.models import Course, Section
 from assignments.models import Assignment, Problem
 
 def course_detail(request, courseSlug):
+	"""
+	Display information about a course, including its sections.
+	"""
 	course = Course.objects.get(slug=courseSlug)
 	sections = Section.objects.filter(course__slug=courseSlug)
 	return object_list(request, sections, extra_context={'course': course})
 
 def section_detail(request, courseSlug, sectionSlug):
+	"""
+	Display information about a section, including its assignments.
+	"""
 	section = Section.objects.filter(course__slug=courseSlug).get(number=sectionSlug)
 	assignments = section.assignment_set.all()
 	return object_list(request, assignments, extra_context={'course': section.course,
 	                                                        'section': section,})
 
 def assignment_detail(request, courseSlug, sectionSlug, assignmentSlug):
+	"""
+	Display information about an assignment, including its problems.
+	"""
 	section = Section.objects.filter(course__slug=courseSlug).get(number=sectionSlug)
 	assignment = section.assignment_set.get(slug=assignmentSlug)
 	problems = assignment.problems.all()
@@ -41,6 +50,9 @@ def assignment_detail(request, courseSlug, sectionSlug, assignmentSlug):
 	                                                     'assignment': assignment,})
 
 def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum):
+	"""
+	Display a problem.
+	"""
 	section = Section.objects.filter(course__slug=courseSlug).get(number=sectionSlug)
 	assignment = section.assignment_set.get(slug=assignmentSlug)
 	problem = assignment.problems.get(number=problemNum)

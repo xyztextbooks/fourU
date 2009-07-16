@@ -21,7 +21,9 @@ from users.models import CustomUser, PERMISSION_LEVEL_CHOICES
 
 class Course(models.Model):
 	"""
-	``name``
+	``name``: the long title of the course
+	
+	``slug``: a shortened form of the ``name``, used for urls
 	"""
 	name = models.CharField(max_length=255,)
 	slug = models.SlugField(unique=True,)

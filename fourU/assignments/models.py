@@ -30,6 +30,8 @@ class Problem(models.Model):
 	can only be of the form \*.py
 	
 	``total``: the maximum number of points that can be earned for this problem
+	
+	``number``: the number of this problem in the assignment
 	"""
 	file = models.FilePathField(path=settings.PROBLEM_DIRECTORY, recursive=True, match=".*[^(__){1}]\.py$")
 	total = models.FloatField(null=True)
@@ -65,6 +67,10 @@ class ProblemGrade(models.Model):
 class Assignment(models.Model):
 	"""
 	An assignment of multiple problems to multiple students
+	
+	``name``: the long title of the assignment
+	
+	``slug``: a shortened form of the ``name``, used for urls
 	
 	``startDate``: when students are allowed to begin the assignment
 	
