@@ -3,7 +3,7 @@
 {% block content %}
 
 	{% for assignment in object_list %}
-		<a href="/courses/{{course.slug}}/{{section}}/{{assignment.slug}}/">{{course}} {{assignment}}</a><br />
+		<a href="{% url assignment course.slug section assignment.slug %}">{{course}} {{assignment}}</a><br />
 	{% endfor %}
 
 {% endblock %}

@@ -22,9 +22,9 @@ from django.views.generic.list_detail import object_list
 from courses.models import Course
 
 urlpatterns = patterns('',
-	(r'^$', object_list, {'queryset': Course.objects.all(),}),
-	(r'^(?P<courseSlug>[\w-]+)/$', 'courses.views.course_detail'),
-	(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/$', 'courses.views.section_detail'),
-	(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/$', 'courses.views.assignment_detail'),
-	(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/(?P<problemNum>\d+)/$', 'courses.views.problem_detail'),
+	url(r'^$', object_list, {'queryset': Course.objects.all(),}, name='all_courses'),
+	url(r'^(?P<courseSlug>[\w-]+)/$', 'courses.views.course_detail', name='course'),
+	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/$', 'courses.views.section_detail', name='section'),
+	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/$', 'courses.views.assignment_detail', name='assignment'),
+	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/(?P<problemNum>\d+)/$', 'courses.views.problem_detail', name='problem'),
 )

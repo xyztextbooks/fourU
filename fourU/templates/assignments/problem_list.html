@@ -3,7 +3,7 @@
 {% block content %}
 
 	{% for problem in object_list %}
-		<a href="/courses/{{course.slug}}/{{section}}/{{assignment.slug}}/{{problem.number}}/">{{problem.number}}</a><br />
+		<a href="{% url problem course.slug section assignment.slug problem.number %}">{{problem.number}}</a><br />
 	{% endfor %}
 
 {% endblock %}
