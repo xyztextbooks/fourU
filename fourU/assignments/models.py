@@ -36,19 +36,38 @@ class Problem(models.Model):
 	file = models.FilePathField(path=settings.PROBLEM_DIRECTORY, recursive=True, match=".*[^(__){1}]\.py$")
 	total = models.FloatField(null=True)
 	number = models.PositiveSmallIntegerField()
+	__instance = None
 	
 	def __str__(self):
-		# get the path up to the problem file
-		path, filename = os.path.split(self.file)
-		# chop off the extension
-		filename = os.path.splitext(filename)[0]
-		
-		# import the problem file
-		file, pathname, description = imp.find_module(filename, [path])
-		module = imp.load_module(filename, file, pathname, description)
-		
-		problem = module.Problem()
-		return str(problem)
+		if self.__instance:
+			return str(self.__instance)
+		else:
+			return str(self.get_instance())
+	
+	def get_instance(self):
+		"""
+		Generate a new instance on-the-fly if referenced and it doesn't exist
+		"""
+		if not self.__instance:
+			try:
+				self.__instance = module.Problem()
+			except NameError:
+				# get the path up to the problem file
+				path, filename = os.path.split(self.file)
+				# chop off the extension
+				filename = os.path.splitext(filename)[0]
+				
+				# import the problem file
+				file, pathname, description = imp.find_module(filename, [path])
+				module = imp.load_module(filename, file, pathname, description)
+				
+				self.__instance = module.Problem()
+		return self.__instance
+	
+	def set_instance(self, instance):
+		self.__instance = instance
+	
+	instance = property(get_instance, set_instance)
 
 class ProblemGrade(models.Model):
 	"""
@@ -60,9 +79,10 @@ class ProblemGrade(models.Model):
 	
 	``problem``: the ``Problem`` this grade is to
 	"""
-	score = models.FloatField()
+	score = models.FloatField(default=0)
 	answer = models.TextField(null=True)
 	problem = models.ForeignKey('Problem')
+	attempts = models.PositiveSmallIntegerField(default=0)
 
 class Assignment(models.Model):
 	"""

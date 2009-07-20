@@ -17,9 +17,10 @@
 ################################################################################
 
 from django.views.generic.list_detail import object_list, object_detail
+from django.shortcuts import render_to_response
 
 from courses.models import Course, Section
-from assignments.models import Assignment, Problem
+from assignments.models import Assignment, Problem, ProblemGrade
 
 def course_detail(request, courseSlug):
 	"""
@@ -56,4 +57,34 @@ def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum)
 	section = Section.objects.filter(course__slug=courseSlug).get(number=sectionSlug)
 	assignment = section.assignment_set.get(slug=assignmentSlug)
 	problem = assignment.problems.get(number=problemNum)
-	return object_detail(request, Problem.objects.all(), problem.id)
+	
+	# pull the ProblemGrade out of the session, or from the database if necessary
+	try:
+		grade = request.session.get('grade', ProblemGrade.objects.get()) # FIXME: give get() parameters
+	# and if we haven't created one yet (first time viewing this problem), then create a new one
+	except ProblemGrade.DoesNotExist:
+		grade = ProblemGrade(problem=problem)
+	try:
+		problemInstance = request.session['problemInstance']
+		# give the problemInstance back the values submitted, if any
+		problemInstance.requestDict = request.POST
+	except:
+		problemInstance = problem.instance
+	
+	if request.method == 'POST':
+		# catch exceptions raised by is_correct(), which may use a comparison function not in our tests
+		try:
+			if problemInstance.is_correct(request.POST['answer']):
+				pass # FIXME: do something different
+		except:
+			raise # maybe do something else?
+		# only count the attempt if we didn't encounter a problem checking the answer
+		else:
+			grade.attempts += 1
+			grade.save()
+	
+	problem.instance = problemInstance
+	request.session['problemInstance'] = problemInstance
+	request.session['grade'] = grade
+	
+	return render_to_response('assignments/problem_detail.html', {'problem': problem})

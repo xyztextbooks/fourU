@@ -42,6 +42,7 @@ class Problem(problems.models.Problem):
 	:Institution: Los Angeles Pierce College
 	:Date: 2009
 	"""
+	requestDict = None
 	def __init__(self):
 		# calculate some values
 		b = random.randint(2, 5)
@@ -51,13 +52,13 @@ class Problem(problems.models.Problem):
 		ans = random.randint(1, 9)
 		d = (r + c) * ans
 		
-		super(Problem, self).__init__(a=a, b=b, c=c, d=d, ans=ans)
+		super(Problem, self).__init__(a=a, b=b, c=c, d=d, answer=ans)
 	
-	def __str__(self, standAlone=False, queryDict=None):
+	def __str__(self, standAlone=False):
 		"""
 		Generate the appropriate forms and return a rendered html template.
 		"""
-		answerForm = AnswerForm(queryDict, answer=forms.CharField(required=False))
+		answerForm = AnswerForm(self.requestDict, answer=forms.CharField(required=False))
 		return render_to_string('example_library/foo.html', {'MEDIA_PATH_PREFIX': settings.MEDIA_PATH_PREFIX,
 		                                                     'problem1': self,
 		                                                     'answerForm': answerForm,

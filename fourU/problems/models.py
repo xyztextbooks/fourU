@@ -28,11 +28,7 @@ class Problem(object):
 		for arg in kwargs:
 			vars(self)[arg] = kwargs[arg]
 	
-	def is_correct(self, answer, compare=None, decrementGrade=True):
-		# TODO: decrement number of tries and/or increment number of attempts
-		if decrementGrade:
-			self.attempts += 1
-		
+	def is_correct(self, answer, compare=None):
 		if compare:
 			return compare(self.answer, answer)
 		else:
