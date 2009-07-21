@@ -105,9 +105,7 @@ TEMPLATE_DIRS = (
 	abs_path('templates'),
 )
 
-AUTHENTICATION_BACKENDS = (
-	'fourU.users.models.CustomUserModelBackend',
-)
+AUTH_PROFILE_MODULE = 'users.UserProfile'
 
 INSTALLED_APPS = (
 	'django.contrib.auth',

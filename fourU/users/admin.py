@@ -17,12 +17,7 @@
 ################################################################################
 
 from django.contrib import admin
-from fourU.users.models import CustomUser, Address
-from django.contrib.auth.models import User
+from fourU.users.models import Address
 
 # include models in the admin interface
-admin.site.register(CustomUser)
 admin.site.register(Address)
-
-# don't show the old User class
-admin.site.unregister(User)
