@@ -18,6 +18,7 @@
 
 from django.views.generic.list_detail import object_list, object_detail
 from django.shortcuts import render_to_response
+from sqlite3 import InterfaceError
 
 from courses.models import Course, Section
 from assignments.models import Assignment, Problem, ProblemGrade
@@ -60,10 +61,10 @@ def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum)
 	
 	# pull the ProblemGrade out of the session, or from the database if necessary
 	try:
-		grade = request.session.get('grade', ProblemGrade.objects.get()) # FIXME: give get() parameters
+		grade = request.session.get('grade', ProblemGrade.objects.get(user=request.user))
 	# and if we haven't created one yet (first time viewing this problem), then create a new one
-	except ProblemGrade.DoesNotExist:
-		grade = ProblemGrade(problem=problem)
+	except (ProblemGrade.DoesNotExist, InterfaceError): # FIXME: does InterfaceError still get thrown on different backends?
+		grade = ProblemGrade(problem=problem, user=request.user)
 	try:
 		problemInstance = request.session['problemInstance']
 		# give the problemInstance back the values submitted, if any
@@ -80,8 +81,10 @@ def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum)
 			raise # maybe do something else?
 		# only count the attempt if we didn't encounter a problem checking the answer
 		else:
-			grade.attempts += 1
-			grade.save()
+			# don't save the problem in the database if we aren't logged in
+			if request.user.is_authenticated():
+				grade.attempts += 1
+				grade.save()
 	
 	problem.instance = problemInstance
 	request.session['problemInstance'] = problemInstance

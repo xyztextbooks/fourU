@@ -21,6 +21,7 @@ import imp
 from django.db import models
 from django.conf import settings
 from courses.models import SectionEnrollment, Section
+from django.contrib.auth.models import User, AnonymousUser
 
 class Problem(models.Model):
 	"""
@@ -83,6 +84,19 @@ class ProblemGrade(models.Model):
 	answer = models.TextField(null=True)
 	problem = models.ForeignKey('Problem')
 	attempts = models.PositiveSmallIntegerField(default=0)
+	user = models.ForeignKey(User, unique=True, null=True)
+	
+	def __init__(self, *args, **kwargs):
+		"""
+		Create a new ``ProblemGrade``.  If passed an ``AnonymousUser`` for ``user``,
+		replaces it with ``None`` before passing control to super's __init__.
+		"""
+		try:
+			if isinstance(kwargs['user'], AnonymousUser):
+				kwargs['user'] = None
+		except KeyError:
+			pass
+		super(ProblemGrade, self).__init__(*args, **kwargs)
 
 class Assignment(models.Model):
 	"""
@@ -130,3 +144,4 @@ class AssignmentGrade(models.Model):
 	isTaken = models.BooleanField()
 	assignment = models.ForeignKey(Assignment)
 	section = models.ForeignKey(SectionEnrollment)
+	user = models.ForeignKey(User, unique=True, null=True)
