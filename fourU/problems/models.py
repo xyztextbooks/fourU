@@ -17,6 +17,7 @@
 ################################################################################
 
 from django import forms
+from sympy import *
 
 class Problem(object):
 	"""
@@ -28,11 +29,8 @@ class Problem(object):
 		for arg in kwargs:
 			vars(self)[arg] = kwargs[arg]
 	
-	def is_correct(self, answer, compare=None):
-		if compare:
-			return compare(self.answer, answer)
-		else:
-			return self.answer == answer
+	def is_correct(self, answer, function, solveFor):
+		return int(answer) in solve(function, solveFor)
 
 class AnswerForm(forms.Form):
 	"""

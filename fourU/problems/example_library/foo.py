@@ -17,6 +17,8 @@
 ################################################################################
 
 # imports common to all problems
+from __future__ import division
+from sympy import *
 from django.conf import settings
 from django.template.loader import render_to_string
 from django import forms
@@ -44,6 +46,8 @@ class Problem(problems.models.Problem):
 	"""
 	requestDict = None
 	def __init__(self):
+		var('y')
+		
 		# calculate some values
 		b = random.randint(2, 5)
 		r = random.randint(1, 9)
@@ -52,32 +56,20 @@ class Problem(problems.models.Problem):
 		ans = random.randint(1, 9)
 		d = (r + c) * ans
 		
-		super(Problem, self).__init__(a=a, b=b, c=c, d=d, answer=ans)
+		self.f = Eq(a*y - b*y, d - c*y)
 	
 	def __str__(self, standAlone=False):
 		"""
 		Generate the appropriate forms and return a rendered html template.
 		"""
-		answerForm = AnswerForm(self.requestDict, answer=forms.CharField(required=False))
+		answerForm = AnswerForm(self.requestDict, answer=forms.IntegerField(required=False))
 		return render_to_string('example_library/foo.html', {'MEDIA_PATH_PREFIX': settings.MEDIA_PATH_PREFIX,
-		                                                     'problem1': self,
+		                                                     'problem': printing.latex(self.f),
 		                                                     'answerForm': answerForm,
 		                                                     'standAlone': standAlone,})
 	
 	def is_correct(self, answer):
-		# longer, more explicit, way
-		#def check(a, b):
-		#	"""
-		#	Return True if `b` is a correct answer, as compared to `a`
-		#	"""
-		#	# TODO: this needs to be a better example, preferably something you'd actually use
-		#	return cmp(a, b) == 0
-		
-		# compare answer using check(), instead of default
-		#return super(Problem, self).is_correct(answer, check)
-		
-		# shorter, but slightly more confusing, way
-		return super(Problem, self).is_correct(answer, lambda a, b: cmp(a, b) == 0)
+		return super(Problem, self).is_correct(function=self.f, solveFor=y, answer=answer)
 
 # are we running this standalone, rather than as a module?
 def main():
