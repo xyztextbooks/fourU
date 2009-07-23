@@ -56,3 +56,9 @@ class SectionEnrollment(models.Model):
 	user = models.ForeignKey(User)
 	permissionLevel = models.CharField(max_length=30, choices=PERMISSION_LEVEL_CHOICES)
 	section = models.ForeignKey(Section)
+	
+	def __str__(self):
+		return "%s (%s - %s)" % (self.user, self.section.course, self.section)
+	
+	def course_and_section(self):
+		return "%s - %s" % (self.section.course, self.section)

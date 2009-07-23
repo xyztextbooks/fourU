@@ -40,6 +40,10 @@ class Problem(models.Model):
 	__instance = None
 	
 	def __str__(self):
+		# chop off the prefix of the filepath
+		return str(self.file)[(len(settings.PROBLEM_DIRECTORY) + 1):]
+	
+	def render(self):
 		if self.__instance:
 			return str(self.__instance)
 		else:
@@ -127,6 +131,9 @@ class Assignment(models.Model):
 	
 	def __str__(self):
 		return self.name
+	
+	def course_and_section(self):
+		return "%s - %s" % (self.section.course, self.section)
 
 class AssignmentGrade(models.Model):
 	"""

@@ -27,7 +27,13 @@ class CourseAdmin(admin.ModelAdmin):
 	prepopulated_fields = {'slug': ('name',)}
 	inlines = [SectionInline,]
 
+class SectionAdmin(admin.ModelAdmin):
+	list_display = ('course', 'number')
+
+class SectionEnrollmentAdmin(admin.ModelAdmin):
+	list_display = ('user', 'permissionLevel', 'course_and_section')
+
 
 admin.site.register(Course, CourseAdmin)
-admin.site.register(Section)
-admin.site.register(SectionEnrollment)
+admin.site.register(Section, SectionAdmin)
+admin.site.register(SectionEnrollment, SectionEnrollmentAdmin)

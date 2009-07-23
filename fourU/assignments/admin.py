@@ -21,9 +21,16 @@ from fourU.assignments.models import Problem, ProblemGrade, Assignment, Assignme
 
 class AssignmentAdmin(admin.ModelAdmin):
 	prepopulated_fields = {'slug': ('name',)}
+	list_display = ('name', 'course_and_section', 'startDate', 'endDate')
+
+class AssignmentGradeAdmin(admin.ModelAdmin):
+	list_display = ('assignment', 'section', 'score')
+
+class ProblemGradeAdmin(admin.ModelAdmin):
+	list_display = ('user', 'problem', 'score', 'attempts')
 
 
 admin.site.register(Problem)
-admin.site.register(ProblemGrade)
+admin.site.register(ProblemGrade, ProblemGradeAdmin)
 admin.site.register(Assignment, AssignmentAdmin)
-admin.site.register(AssignmentGrade)
+admin.site.register(AssignmentGrade, AssignmentGradeAdmin)
