@@ -34,7 +34,8 @@ class Problem(models.Model):
 	
 	``number``: the number of this problem in the assignment
 	"""
-	file = models.FilePathField(path=settings.PROBLEM_DIRECTORY, recursive=True, match=".*[^(__){1}]\.py$")
+	# don't match __init__.py files
+	file = models.FilePathField(path=settings.PROBLEM_DIRECTORY, recursive=True, match=".*[^(__init__)]\.py$")
 	total = models.FloatField(null=True)
 	number = models.PositiveSmallIntegerField()
 	__instance = None
