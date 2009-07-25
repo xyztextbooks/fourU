@@ -1,0 +1,16 @@
+{% extends "problem_base.html" %}
+
+{% block content %}
+<p>
+	Write the English equivalent of the mathematical expression: 
+</p>
+<p>
+	{{problem}}
+</p>
+<form action="" method="POST">
+The {{answerForm.action}} of {{answerForm.arg1}} and {{answerForm.arg2}}
+is {{answerForm.comparison}} to {{answerForm.answer}}.
+<br /><br />
+<input type="submit" value="Submit" />
+</form>
+{% endblock %}
