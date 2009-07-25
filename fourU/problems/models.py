@@ -44,7 +44,7 @@ class AnswerForm(forms.Form):
 		"""
 		# we have to make sure to call Form's __init__(), since it sets some variables we override
 		#super(AnswerForm, self).__init__(queryDict)
-		forms.Form.__init__(self, queryDict)
+		forms.Form.__init__(self, queryDict, prefix="answer")
 		
 		# add any given keyword arguments as instance variables
 		# because the form fields aren't _really_ instance variables,

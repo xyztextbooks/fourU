@@ -75,7 +75,12 @@ def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum)
 	if request.method == 'POST':
 		# catch exceptions raised by is_correct(), which may use a comparison function not in our tests
 		try:
-			if problemInstance.is_correct(request.POST['answer']):
+			answers = {}
+			for key, value in request.POST.iteritems():
+				if key[:7] == "answer-":
+					answers[key[7:]] = value
+			
+			if problemInstance.is_correct(answers):
 				pass # FIXME: do something different
 		except:
 			raise # maybe do something else?
