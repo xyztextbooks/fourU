@@ -22,7 +22,7 @@ from sympy import *
 from django.conf import settings
 from django.template.loader import render_to_string
 from django import forms
-from problems.models import AnswerForm
+from problems.models import AnswerForm, integer
 import problems.models
 
 import random
@@ -54,10 +54,10 @@ class Problem(problems.models.Problem):
 	def is_correct(self, answer):
 		try:
 			return (answer['action'] == 'sum' and
-			        int(answer['arg1']) == self.a and
-			        int(answer['arg2']) == self.b and
+			        integer(answer['arg1']) == self.a and
+			        integer(answer['arg2']) == self.b and
 			        answer['comparison'] == 'equal' and
-			        int(answer['answer']) == self.sum)
+			        integer(answer['answer']) == self.sum)
 		except KeyError:
 			return False
 

@@ -30,7 +30,7 @@ from sympy import *
 from django.conf import settings
 from django.template.loader import render_to_string
 from django import forms
-from problems.models import AnswerForm
+from problems.models import AnswerForm, integer
 import problems.models
 
 class Problem(problems.models.Problem):

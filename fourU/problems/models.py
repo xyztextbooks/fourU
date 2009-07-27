@@ -19,6 +19,12 @@
 from django import forms
 from sympy import *
 
+def integer(object):
+	try:
+		return int(object)
+	except:
+		return None
+
 class Problem(object):
 	"""
 	A generic wrapper of things useful in displaying and grading a math problem.
@@ -30,7 +36,7 @@ class Problem(object):
 			vars(self)[arg] = kwargs[arg]
 	
 	def is_correct(self, answer, function, solveFor):
-		return int(answer) in solve(function, solveFor)
+		return integer(answer) in solve(function, solveFor)
 
 class AnswerForm(forms.Form):
 	"""
