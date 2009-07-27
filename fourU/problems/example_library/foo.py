@@ -69,7 +69,7 @@ class Problem(problems.models.Problem):
 		                                                     'standAlone': standAlone,})
 	
 	def is_correct(self, answer):
-		return super(Problem, self).is_correct(function=self.f, solveFor=y, answer=answer)
+		return super(Problem, self).is_correct(function=self.f, solveFor=y, answer=answer['answer'])
 
 # are we running this standalone, rather than as a module?
 def main():
