@@ -1,0 +1,11 @@
+{% extends "problem_base.html" %}
+
+{% block content %}
+<p>
+	Write {{fraction}} as an equivalent fraction with denominator {{denom}}.
+</p>
+<form action="" method="POST">
+{{ answerForm.answer }} / {{denom}}
+<input type="submit" value="Submit" />
+</form>
+{% endblock %}
