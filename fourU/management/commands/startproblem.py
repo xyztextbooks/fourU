@@ -76,16 +76,38 @@ if __name__ == '__main__' or __name__ == '__console__':
 
 '''
 
+templateBlock = '''\
+{% extends "problem_base.html" %}
+
+{% block content %}
+<p>
+	Solve each equation.
+</p>
+<p>
+	{{problem}}
+</p>
+<form action="" method="POST">
+{{ answerForm.as_p }}
+<input type="submit" value="Submit" />
+</form>
+{% endblock %}
+
+'''
+
 class Command(LabelCommand):
 	help = "Creates a template problem file.  Makes directories as needed."
 	
 	def handle_label(self, problem, **options):
-		filepath = os.path.join(settings.PROBLEM_DIRECTORY, problem + ".py")
-		try:
-			file = open(filepath, "w")
-		except IOError:
-			library = os.path.split(filepath)[0]
-			os.makedirs(library)
-			file = open(filepath, "w")
-		file.write(problemBlock % (problem + ".html"))
-		file.close()
+		filepath = os.path.join(settings.PROBLEM_DIRECTORY, problem)
+		for extension, textBlock in {".py": problemBlock, ".html": templateBlock}.iteritems():
+			try:
+				file = open(filepath + extension, "w")
+			except IOError:
+				library = os.path.split(filepath)[0]
+				os.makedirs(library)
+				file = open(filepath + extension, "w")
+			try:
+				file.write(textBlock % (problem + extension))
+			except:
+				file.write(textBlock)
+			file.close()
