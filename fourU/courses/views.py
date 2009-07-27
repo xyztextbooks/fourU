@@ -59,20 +59,24 @@ def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum)
 	assignment = section.assignment_set.get(slug=assignmentSlug)
 	problem = assignment.problems.get(number=problemNum)
 	
-	# pull the ProblemGrade out of the session, or from the database if necessary
-	try:
-		grade = request.session.get('grade', ProblemGrade.objects.get(user=request.user))
-	# and if we haven't created one yet (first time viewing this problem), then create a new one
-	except (ProblemGrade.DoesNotExist, InterfaceError): # FIXME: does InterfaceError still get thrown on different backends?
+	if request.method == 'GET':
 		grade = ProblemGrade(problem=problem, user=request.user)
-	try:
-		problemInstance = request.session['problemInstance']
-		# give the problemInstance back the values submitted, if any
-		problemInstance.requestDict = request.POST
-	except:
 		problemInstance = problem.instance
 	
 	if request.method == 'POST':
+		# pull the ProblemGrade out of the session, or from the database if necessary
+		try:
+			grade = request.session.get('grade', ProblemGrade.objects.get(user=request.user))
+		# and if we haven't created one yet (first time viewing this problem), then create a new one
+		except (ProblemGrade.DoesNotExist, InterfaceError): # FIXME: does InterfaceError still get thrown on different backends?
+			grade = ProblemGrade(problem=problem, user=request.user)
+		try:
+			problemInstance = request.session['problemInstance']
+			# give the problemInstance back the values submitted, if any
+			problemInstance.requestDict = request.POST
+		except:
+			problemInstance = problem.instance
+		
 		# catch exceptions raised by is_correct(), which may use a comparison function not in our tests
 		try:
 			answers = {}
