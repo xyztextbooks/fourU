@@ -18,7 +18,6 @@
 
 from django.views.generic.list_detail import object_list, object_detail
 from django.shortcuts import render_to_response
-from sqlite3 import InterfaceError
 
 from courses.models import Course, Section
 from assignments.models import Assignment, Problem, ProblemGrade
@@ -68,7 +67,7 @@ def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum)
 		try:
 			grade = request.session.get('grade', ProblemGrade.objects.get(user=request.user))
 		# and if we haven't created one yet (first time viewing this problem), then create a new one
-		except (ProblemGrade.DoesNotExist, InterfaceError): # FIXME: does InterfaceError still get thrown on different backends?
+		except:
 			grade = ProblemGrade(problem=problem, user=request.user)
 		try:
 			problemInstance = request.session['problemInstance']
