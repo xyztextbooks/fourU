@@ -20,7 +20,7 @@
 
 import os
 
-rootPath=os.path.realpath(os.curdir)
+rootPath = os.path.dirname(os.path.realpath(__file__))
 def abs_path(path):
 	return os.path.join(rootPath,path)
 
