@@ -29,7 +29,7 @@ urlpatterns = patterns('',
 	(r'^courses/', include('courses.urls')),
 
 	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-	(r'^admin/(.*)', admin.site.root),
+	(r'^admin/', include(admin.site.urls)),
 )
 
 if settings.DEBUG:

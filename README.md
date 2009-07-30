@@ -2,7 +2,7 @@ Dependencies
 ============
 [Python](http://www.python.org/download/) >= 2.3, <= 3.0 or
 [Jython](http://www.jython.org/) >= 2.5.0  
-[Django](http://www.djangoproject.com/download/) >= 1.0  
+[Django](http://www.djangoproject.com/download/) >= 1.1  
 A webserver:
 
  - [Apache](http://httpd.apache.org/download.cgi) with one of:
