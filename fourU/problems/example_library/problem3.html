@@ -1,0 +1,12 @@
+{% extends "problem_base.html" %}
+
+{% block content %}
+<p>
+	{{problem}}
+</p>
+<form action="" method="POST">
+{{ answerForm.as_p }}
+<input type="submit" value="Submit" />
+</form>
+{% endblock %}
+
