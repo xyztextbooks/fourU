@@ -107,7 +107,7 @@ class Command(LabelCommand):
 				os.makedirs(library)
 				file = open(filepath + extension, "w")
 			try:
-				file.write(textBlock % (problem + extension))
+				file.write(textBlock % (problem + ".html"))
 			except:
 				file.write(textBlock)
 			file.close()
