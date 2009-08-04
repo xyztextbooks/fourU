@@ -19,14 +19,19 @@ A webserver:
 
 A database:
 
- - [SQLite](http://www.sqlite.org/) (included with Python >= 2.5)
- - [PostgreSQL](http://www.postgresql.org/)
- - [MySQL](http://www.mysql.com/)
- - [Oracle](http://www.oracle.com/)
- - [SQL Anywhere](http://www.sybase.com/products/databasemanagement/sqlanywhere)
- - [IBM DB2](http://www.ibm.com/db2)
- - [Microsoft SQL Server 2005](http://www.microsoft.com/sqlserver/2005/)
- - [Firebird](http://www.firebirdsql.org/)
+> Officially supported:
+>
+> - [SQLite](http://www.sqlite.org/) (included with Python >= 2.5)
+> - [PostgreSQL](http://www.postgresql.org/)
+> - [MySQL](http://www.mysql.com/)
+> - [Oracle](http://www.oracle.com/)
+
+> Unofficial:
+>
+> - [SQL Anywhere](http://www.sybase.com/products/databasemanagement/sqlanywhere)
+> - [IBM DB2](http://www.ibm.com/db2)
+> - [Microsoft SQL Server 2005](http://www.microsoft.com/sqlserver/2005/)
+> - [Firebird](http://www.firebirdsql.org/)
 
 Python Modules
 --------------
