@@ -36,10 +36,17 @@ a {
 .download {
 	float: right;
 }
+p {
+	line-height: 160%;
+}
 pre {
 	background: #100B0B;
 	color: #FAF0FF;
 	padding: 15px;
+}
+li {
+	line-height: 160%;
+	margin-bottom: 1em;
 }
 hr {
 	border: 0; width: 80%;
