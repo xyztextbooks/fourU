@@ -39,6 +39,9 @@ a {
 .qa-pair {
 	margin-bottom: 2.5em;
 }
+.crew h2 {
+	display: inline;
+}
 p {
 	line-height: 160%;
 }
