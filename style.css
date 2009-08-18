@@ -36,6 +36,9 @@ a {
 .download {
 	float: right;
 }
+.qa-pair {
+	margin-bottom: 2.5em;
+}
 p {
 	line-height: 160%;
 }

@@ -90,9 +90,77 @@
 	</p>
 	
 	<h2>Questions</h2>
+	<div class="qa-pair">
 	<p>
-		
+		<b>Q:</b> Why write this yourself, rather than use the existing WeBWorK
+		codebase? <a
+		href="http://www.joelonsoftware.com/articles/fog0000000069.html">Joel
+		says</a> you should never do this!
 	</p>
+	<p>
+		<b>A:</b> Of the three reasons Joel mentions programmers give for
+		rewriting code, the "architectural problems" are the closest to what we
+		felt with WeBWorK.
+		<ol>
+			<li>Much of the code would not actually be rewritten, but rather use
+			the already rewritten (and proven) implementations present in the
+			framework and various libraries.</li>
+			<li>James doesn't know Perl nearly well enough to undertake
+			something of that magnitude :). A short experiment was tried, and we
+			found that a) we couldn't find any local Perl hackers and b)
+			outsourced Perl programmers at the price we needed required far too
+			much micromanagement.  That, then, was the end of Perl.</li>
+		</ol>
+		You'll note that rewrites are sometimes extremely successful: both the
+		Windows NT kernel (upon which XP was based) and Mac OS X are widely
+		accepted as being tremendous improvements over their predeccesors.
+	</p>
+	</div>
+	<div class="qa-pair">
+	<p>
+		<b>Q:</b> Ok, but why Python?
+	</p>
+	<p>
+		<b>A:</b> Well, that all depends on what you're thinking it should have been instead. ;)
+	</p>
+	<p>
+		Java and .NET have far too much overhead to be either developed or
+		deployed quickly and easily. Rails has a tendency to be both magical and
+		opinionated, both things that James feels make development difficult
+		(although, obviously, many people have done very well with it). More
+		importantly, Ruby's userland libraries are still in a fairly young
+		stage; they're growing at an incredible rate, but they couldn't compare
+		(at the time the decision was made) to the wealth of Python libraries.
+	</p>
+	<p>
+		PHP was the initial decision, actually. It's a dynamically-typed
+		language with a large number of libraries, code snippets and users, and
+		was designed for the web specifically. It's also one of the most common
+		server-side languages, and is available on free and cheap shared hosts
+		everywhere. After having forsaken PHP for a year for the Python creed,
+		however, James found himself constantly doing all in his power to use a
+		PHP version of Django, and so, he decided to use the real thing instead.
+	</p>
+	</div>
+	<div class="qa-pair">
+	<p>
+		<b>Q:</b> What about [insert Python framework here]?
+	</p>
+	<p>
+		<b>A:</b> Django has:
+		<ul>
+			<li>A 1.0 release, with guarenteed API stability</li>
+			<li>A large userbase</li>
+			<li>Active development</li>
+			<li>Excellent and extensive documentation</li>
+			<li>A wide variety of 3rd-party middlewares</li>
+			<li>Tightly-coherent components that allow you to get going with
+			minimal fuss</li>
+			<li>...and loosely-couple components so that you can swap out pieces
+			as needed.</li>
+		</ul>
+	</p>
+	</div>
       
     <div class="footer">
       get the source code on GitHub : <a href="http://github.com/xyztextbooks/fourU">xyztextbooks/fourU</a>
