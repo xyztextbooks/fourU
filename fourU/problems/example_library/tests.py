@@ -22,10 +22,8 @@ class TestCase(unittest.TestCase):
 		
 		c = p.denom / b
 		
-		# the following two are only guaranteed to be true
-		# if Rational doesn't reduce the fraction
-		#self.failUnless((a) in xrange(2, 8), "a is %s" % a)
-		#self.failUnless((b) in xrange(4, 10), "b is %s" % b)
+		self.failUnless((a) in xrange(2, 8), "a is %s" % a)
+		self.failUnless((b) in xrange(4, 10), "b is %s" % b)
 		self.failUnlessEqual(a, p.num / c, "a is %s, p.num is %s, c is %s" % (a, p.num, c))
 		self.failUnlessEqual(b, p.denom / c, "b is %s, p.denom is %s, c is %s" % (b, p.denom, c))
 		self.failUnless(p.is_correct({'answer': str(a * c)}))

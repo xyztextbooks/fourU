@@ -3,6 +3,7 @@
 # imports common to all problems
 from __future__ import division
 from sympy import *
+from problems.utils import Fraction
 from django.conf import settings
 from django.template.loader import render_to_string
 from django import forms
@@ -20,7 +21,7 @@ class Problem(problems.models.Problem):
 			b = random.randint(4, 9)
 		c = random.randint(3, 4)
 		
-		self.fraction = Rational(a, b)
+		self.fraction = Fraction(a, b)
 		self.num = c * a
 		self.denom = c * b
 	
