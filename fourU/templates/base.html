@@ -4,6 +4,8 @@
     <title>{% block title %}{% endblock %}</title>
     <script type="text/javascript" src="{{ MEDIA_PATH_PREFIX }}/media/js/jsMath/easy/load.js">
     </script>
+	{% block extra_js %}{% endblock %}
+	{% block extra_css %}{% endblock %}
 </head>
 <body bgcolor="silver">
     {% block content %}
