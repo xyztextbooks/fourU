@@ -27,4 +27,7 @@ urlpatterns = patterns('',
 	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/$', 'courses.views.section_detail', name='section'),
 	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/$', 'courses.views.assignment_detail', name='assignment'),
 	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/(?P<problemNum>\d+)/$', 'courses.views.problem_detail', name='problem'),
+	
+	# AJAX views
+	url(r'^preview-answer/$', 'courses.views.preview_answer', name='preview_answer'),
 )
