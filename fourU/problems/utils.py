@@ -92,5 +92,5 @@ if __name__ in ("__main__", "__console__"):
 	# the doctests aren't identified properly when using iPython or
 	# code.InteractiveConsole (which "manage.py problem" uses)
 	# see http://stackoverflow.com/questions/1336980/running-doctests-through-ipython-and-pseduo-consoles
-	import doctest
-	doctest.testmod(verbose=True)
+	import doctest, problems.utils
+	doctest.testmod(problems.utils, verbose=True)
