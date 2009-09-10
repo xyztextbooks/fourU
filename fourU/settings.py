@@ -117,5 +117,6 @@ INSTALLED_APPS = (
 	'fourU',
 	'fourU.assignments',
 	'fourU.courses',
+	'fourU.problems',
 	'fourU.users',
 )

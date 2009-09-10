@@ -17,17 +17,8 @@
 ################################################################################
 
 from django.conf.urls.defaults import *
-from django.views.generic.list_detail import object_list
-
-from courses.models import Course
+from django.views.generic.simple import direct_to_template
 
 urlpatterns = patterns('',
-	url(r'^$', object_list, {'queryset': Course.objects.all(),}, name='all_courses'),
-	url(r'^(?P<courseSlug>[\w-]+)/$', 'courses.views.course_detail', name='course'),
-	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/$', 'courses.views.section_detail', name='section'),
-	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/$', 'courses.views.assignment_detail', name='assignment'),
-	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/(?P<problemNum>\d+)/$', 'courses.views.problem_detail', name='problem'),
-	
-	# AJAX views
-	#url(r'^preview-answer/$', 'courses.views.preview_answer', name='preview_answer'),
+	url(r'^$', direct_to_template, {'template': 'problems/edit_problem.html',}),
 )

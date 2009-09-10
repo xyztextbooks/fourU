@@ -7,24 +7,7 @@
     </script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js">
     </script>
-    <script type="text/javascript">
-        var preview_answer = function() {
-            var answer = $("#id_answer-answer").val()
-            if (answer != "") {
-                var data = { answer: answer };
-                var args = { type: "POST", url: "{% url preview_answer %}", data: data, complete: done };
-                $.ajax(args);
-            }
-            else {
-                // display an explanation of failure
-            }
-            return false;
-        };
-        
-        var done = function(response, status) {
-            alert("status was " + status);
-        };
-    </script>
+
 </head>
 <body>
 {% endif %}
