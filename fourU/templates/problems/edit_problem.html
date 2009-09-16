@@ -123,6 +123,34 @@ function new_answer(name) {
 	update_onclicks();
 	return false;
 };
+
+function preview_answer() {
+	console.log("Alright, we're calling preview_answer()...");
+	var problem = $("textarea").val()
+	if (problem != "") {
+		console.log("problem was not null; in fact, here is what it is:");
+		console.log(problem);
+		var data = { 'problem': problem };
+		var args = { 'type': "POST", 'url': "{% url preview_problem %}", 'data': data, 'complete': done };
+		$.ajax(args);
+	}
+	else {
+		console.log("hmm, problem was null");
+		// display an explanation of failure
+	}
+	return false;
+};
+
+function done(response, status) {
+	var data = eval('('+response.responseText+')');
+	if (status == "success") {
+		console.log("data.problem: "+data.problem);
+		$("#preview-box").html(data.problem);
+		jsMath.ProcessBeforeShowing(document.getElementById('preview-box'));
+	} else {
+		console.log("status was " + status);
+	}
+};
 </script>
 {% endblock %}
 
@@ -149,22 +177,9 @@ function new_answer(name) {
 	<div style="border: 3px #333 dashed; text-align: left;" id="secondary">
 	</div><br />
 	
-	<a href="#" onclick="$('#preview-box').show('normal'); return false;">Preview!</a><br />
+	<a href="#" onclick="preview_answer(); return false;">Preview!</a><br />
 
-	<div style="border: 3px #333 dashed; display: none;" id="preview-box">
-		<p>
-				Write the English equivalent of the mathematical expression: 
-		</p>
-		<p>
-				<!-- $8 + 4 = 12$ -->
-				8 + 4 = 12
-		</p>
-		<form action="" method="POST">
-		The <input type="text" name="answer-action" id="id_answer-action" /> of <input type="text" name="answer-arg1" id="id_answer-arg1" /> and <input type="text" name="answer-arg2" id="id_answer-arg2" />
-		is <input type="text" name="answer-comparison" id="id_answer-comparison" /> to <input type="text" name="answer-answer" id="id_answer-answer" />.
-		<br /><br />
-		<input type="submit" value="Submit" />
-		</form>
+	<div style="border: 3px #333 dashed;" id="preview-box">
 	</div>
 	</center>
 

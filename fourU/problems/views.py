@@ -16,12 +16,30 @@
 # GNU General Public License or the MIT License for more details.              #
 ################################################################################
 
-from django.conf.urls.defaults import *
-from django.views.generic.simple import direct_to_template
+from django.utils import simplejson
+from django.http import HttpResponse
+from re import search, sub
 
-urlpatterns = patterns('',
-	url(r'^$', direct_to_template, {'template': 'problems/edit_problem.html',}),
+def preview_problem(request):
+	try:
+		raw = request.POST['problem']
+	except:
+		raw = ''
+	converted = ['<p>',]
 	
-	# AJAX views
-	url(r'^preview-problem/$', 'problems.views.preview_problem', name='preview_problem'),
-)
+	for line in raw.split('\n'):
+		if search(r'^[\s]*$', line): # blank line?
+			line = '</p><p>'
+		elif search(r'[\s]{4}$', line):
+			line = sub(r'[\s]{4}$', '<br />', line)
+		
+		if search(r'\[\[(.*?)\]\]', line):
+			line = sub(r'\[\[(.*?)\]\]', r'<input type="text" id="\1" />', line)
+		if search(r'#([\w_]+)', line):
+			line = sub(r'#([\w_]+)', r'\1', line)
+		if search(r'\[%(.*)%\]', line):
+			line = sub(r'\[%(.*)%\]', r'<span class="math">\1</span>', line)
+		converted.append(line)
+	converted.append('</p>')
+	
+	return HttpResponse(simplejson.dumps({'problem': '\n'.join(converted)}), mimetype='application/json')
