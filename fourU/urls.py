@@ -27,6 +27,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 	(r'^courses/', include('courses.urls')),
+	(r'^problems/', include('problems.urls')),
 
 	(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 	(r'^admin/', include(admin.site.urls)),

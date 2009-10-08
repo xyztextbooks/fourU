@@ -43,7 +43,7 @@ jsMath.Easy = {
   //  1 means use the autoload plug-in to decide if jsMath should be loaded
   //  0 means always load jsMath
   //
-  autoload: 1,
+  autoload: 0,
 
   //
   //  Setting any of these will cause the tex2math plugin to be used
@@ -91,7 +91,7 @@ jsMath.Easy = {
   //  users from finding out that they can have a better experience on your
   //  site by installing some fonts, so don't disable this).
   //
-  showFontWarnings: 1,
+  showFontWarnings: 0,
   
   //
   //  Use "Process" or "ProcessBeforeShowing".  See the jsMath

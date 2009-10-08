@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+div {
+	padding: 3px;
+}
+.expander {
+	background-repeat: no-repeat;
+	background-position: 4px center;
+	padding-left: 16px;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+jQuery(document).ready(function(){
+	$('.expander').css({'background-image': 'url(/media/images/collapsed.png)'});
+	$('.expander').next().hide();
+	
+	update_onclicks();
+});
+
+function update_onclicks() {
+	var CONSTRAINT = '\
+	<span> \
+		<select> \
+			<option>&lt;</option> \
+			<option>&le;</option> \
+			<option>=</option> \
+			<option>&ge;</option> \
+			<option>&gt;</option> \
+			<option>&ne;</option> \
+		</select> \
+		<input type="text" /> <a href="#" class="remove">remove</a><br /> \
+	</span>';
+	
+	$('.expander').unbind('click').click(function(){
+		$(this).next().toggle('normal');
+	});
+	$('.expander').toggle(
+		function() {
+			$(this).css({'background-image': 'url(/media/images/expanded.png)'});
+		},
+		function() {
+			$(this).css({'background-image': 'url(/media/images/collapsed.png)'});
+		}
+	);
+	
+	$('.add-another').unbind('click').click(function(){
+		$(this).prev().append(CONSTRAINT);
+		$('.remove').click(function(){
+			$(this).parent().remove();
+			return false;
+		});
+		return false;
+	});
+	$('.remove').unbind('click').click(function(){
+		$(this).parent().remove();
+		return false;
+	});
+};
+
+function new_value(name) {
+	var value = prompt("Enter the name of the new value:", "");
+	$('#secondary').append('\
+	<div style="border: 1px #333 solid;"> \
+		<div class="expander"> \
+			#'+value+' \
+		</div> \
+		<div id="symbol-'+value+'" class="symbol" style="border-top: 1px #999 solid;"> \
+			calculate value: <input type="text" /><br /> \
+			<div> \
+				<u>constraints</u><br /> \
+			</div> \
+			<a href="#" class="add-another">add another</a> \
+		</div> \
+	</div>');
+	$('textarea').append('#'+value);
+	
+	var element = $('#secondary .expander:last');
+	
+	element.css({
+		'background-image': 'url(/media/images/collapsed.png)',
+	});
+	element.next().hide();
+	
+	update_onclicks();
+	return false;
+};
+
+var nextAnswerNumber = 1;
+function new_answer(name) {
+	$('#secondary').append('\
+	<div style="border: 1px #333 solid;"> \
+		<div class="expander"> \
+			answer_'+nextAnswerNumber+' \
+		</div> \
+		<div id="answer-'+nextAnswerNumber+'" class="answer" style="border-top: 1px #999 solid;"> \
+			expected: <input type="text" /><br /> \
+			type: \
+			<select> \
+				<option>fill-in</option> \
+				<option>radio</option> \
+				<option>drop-down</option> \
+			</select> \
+			<div style="margin-left: 2em;"> \
+				size: <input type="text" /> \
+			</div> \
+		</div> \
+	</div>');
+	$('textarea').append('[[answer_'+nextAnswerNumber+']]');
+	nextAnswerNumber++;
+	
+	var element = $('#secondary .expander:last');
+	
+	element.css({
+		'background-image': 'url(/media/images/collapsed.png)',
+	});
+	element.next().hide();
+	
+	update_onclicks();
+	return false;
+};
+
+function preview_answer() {
+	console.log("Alright, we're calling preview_answer()...");
+	var problem = $("textarea").val()
+	if (problem != "") {
+		console.log("problem was not null; in fact, here is what it is:");
+		console.log(problem);
+		var data = { 'problem': problem };
+		var args = { 'type': "POST", 'url': "{% url preview_problem %}", 'data': data, 'complete': done };
+		$.ajax(args);
+	}
+	else {
+		console.log("hmm, problem was null");
+		// display an explanation of failure
+	}
+	return false;
+};
+
+function done(response, status) {
+	var data = eval('('+response.responseText+')');
+	if (status == "success") {
+		console.log("data.problem: "+data.problem);
+		$("#preview-box").html(data.problem);
+		jsMath.ProcessBeforeShowing(document.getElementById('preview-box'));
+	} else {
+		console.log("status was " + status);
+	}
+};
+</script>
+{% endblock %}
+
+{% block content %}
+
+	<center>
+	<div style="border: 3px #333 dashed;">
+		<textarea rows="10" cols="100"></textarea>
+		<!--
+		Write the English equivalent of the mathematical expression: 
+		[% #a + #b = #sum %]
+		The [[answer_01]] of [[answer_02]] and [[answer_03]]
+		is [[answer_04]] to [[answer_05]].
+		-->
+	</div>
+	
+	<div style="border-left: 3px #333 dashed; border-right: 3px #333 dashed;">
+		add:
+		<a href="#" onclick="new_value();">value</a>
+		<a href="#" onclick="new_answer();">answer</a>
+		<a href="#">constant</a>
+	</div>
+
+	<div style="border: 3px #333 dashed; text-align: left;" id="secondary">
+	</div><br />
+	
+	<a href="#" onclick="preview_answer(); return false;">Preview!</a><br />
+
+	<div style="border: 3px #333 dashed;" id="preview-box">
+	</div>
+	</center>
+
+{% endblock %}

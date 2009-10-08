@@ -16,18 +16,30 @@
 # GNU General Public License or the MIT License for more details.              #
 ################################################################################
 
-from django.conf.urls.defaults import *
-from django.views.generic.list_detail import object_list
+from django.utils import simplejson
+from django.http import HttpResponse
+from re import search, sub
 
-from courses.models import Course
-
-urlpatterns = patterns('',
-	url(r'^$', object_list, {'queryset': Course.objects.all(),}, name='all_courses'),
-	url(r'^(?P<courseSlug>[\w-]+)/$', 'courses.views.course_detail', name='course'),
-	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/$', 'courses.views.section_detail', name='section'),
-	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/$', 'courses.views.assignment_detail', name='assignment'),
-	url(r'^(?P<courseSlug>[\w-]+)/(?P<sectionSlug>\d+)/(?P<assignmentSlug>[\w-]+)/(?P<problemNum>\d+)/$', 'courses.views.problem_detail', name='problem'),
+def preview_problem(request):
+	try:
+		raw = request.POST['problem']
+	except:
+		raw = ''
+	converted = ['<p>',]
 	
-	# AJAX views
-	#url(r'^preview-answer/$', 'courses.views.preview_answer', name='preview_answer'),
-)
+	for line in raw.split('\n'):
+		if search(r'^[\s]*$', line): # blank line?
+			line = '</p><p>'
+		elif search(r'[\s]{4}$', line):
+			line = sub(r'[\s]{4}$', '<br />', line)
+		
+		if search(r'\[\[(.*?)\]\]', line):
+			line = sub(r'\[\[(.*?)\]\]', r'<input type="text" id="\1" />', line)
+		if search(r'#([\w_]+)', line):
+			line = sub(r'#([\w_]+)', r'\1', line)
+		if search(r'\[%(.*)%\]', line):
+			line = sub(r'\[%(.*)%\]', r'<span class="math">\1</span>', line)
+		converted.append(line)
+	converted.append('</p>')
+	
+	return HttpResponse(simplejson.dumps({'problem': '\n'.join(converted)}), mimetype='application/json')
