@@ -87,7 +87,7 @@ def wysiwym_to_html(line, answers):
 				size = ' size="%s"' % answers['answer-%s' % answerNum]['size']
 			except:
 				size = ''
-			replacement = r'<input type="text"' + size + ' id="answer_\1" />'
+			replacement = r'<input type="text"' + size + r' id="answer_\1" />'
 		elif type == 'radio':
 			replacement = r'<input type="radio" id="answer_\1" />'
 		else:
