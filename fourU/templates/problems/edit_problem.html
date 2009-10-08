@@ -14,6 +14,8 @@ div {
 {% endblock %}
 
 {% block extra_js %}
+<script src="/media/js/jquery.json-2.2.min.js" type="text/javascript">
+</script>
 <script type="text/javascript">
 jQuery(document).ready(function(){
 	$('.expander').css({'background-image': 'url(/media/images/collapsed.png)'});
@@ -100,7 +102,7 @@ function new_answer(name) {
 		<div id="answer-'+nextAnswerNumber+'" class="answer" style="border-top: 1px #999 solid;"> \
 			expected: <input type="text" /><br /> \
 			type: \
-			<select> \
+			<select name="type"> \
 				<option>fill-in</option> \
 				<option>radio</option> \
 				<option>drop-down</option> \
@@ -131,6 +133,25 @@ function preview_answer() {
 		console.log("problem was not null; in fact, here is what it is:");
 		console.log(problem);
 		var data = { 'problem': problem };
+		
+		// pull some relevant data out of the answers
+		var answers = {};
+		// for each answer-xxx div...
+		$("div[id*='answer-']").each(function(){
+			var attributes = {};
+			console.log("=="+$(this).attr('id')+"==");
+			// ... get the <select> tags
+			$('select', this).each(function(){
+				// and store the selected value, using the name attribute as the key
+				attributes[$(this).attr('name')] = $(':selected', this).val();
+				console.log("\t"+$(this).attr('name')+": "+$(':selected', this).val());
+			});
+			answers[$(this).attr('id')] = attributes;
+		});
+		data['answers'] = $.toJSON(answers);
+		// we end up with something like this for data['answers']:
+		// {"answer-1":{"type":"fill-in"},"answer-2":{"type":"radio"}}
+		
 		var args = { 'type': "POST", 'url': "{% url preview_problem %}", 'data': data, 'complete': done };
 		$.ajax(args);
 	}
@@ -142,7 +163,7 @@ function preview_answer() {
 };
 
 function done(response, status) {
-	var data = eval('('+response.responseText+')');
+	var data = $.evalJSON(response.responseText);
 	if (status == "success") {
 		console.log("data.problem: "+data.problem);
 		$("#preview-box").html(data.problem);
