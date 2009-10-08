@@ -16,7 +16,7 @@
 # GNU General Public License or the MIT License for more details.              #
 ################################################################################
 
-from sympy import Rational
+from sympy import Rational, Basic
 # importing _methods is a bit risky, as it implies that it may change or move at
 # any time; we'll have to keep an eye on this
 from sympy.core.numbers import _parse_rational as parse_rational
@@ -35,6 +35,22 @@ class Fraction(Rational):
 	>>> fraction.q
 	4
 	
+	>>> fraction3 = Fraction(2, 4)
+	>>> fraction3
+	2/4
+	>>> fraction3.p
+	2
+	>>> fraction3.q
+	4
+	
+	>>> fraction4 = Fraction(2, 2)
+	>>> fraction4
+	2/2
+	>>> fraction4.p
+	2
+	>>> fraction4.q
+	2
+	
 	Fraction can also be initialized with a string in standard fraction notation.
 	
 	>>> fraction2 = Fraction("6/4")
@@ -51,13 +67,15 @@ class Fraction(Rational):
 	>>> printing.latex(fraction)
 	'$\\\\frac{6}{4}$'
 	"""
-	def __init__(self, num, denom=None):
+	def __new__(cls, num, denom=None):
+		obj = Basic.__new__(cls)
 		if denom is None:
 			if isinstance(num, str):
-				self.p, self.q = parse_rational(num)
+				obj.p, obj.q = parse_rational(num)
 		else:
-			self.p = num
-			self.q = denom
+			obj.p = num
+			obj.q = denom
+		return obj
 	
 	def reduce(self):
 		"""
