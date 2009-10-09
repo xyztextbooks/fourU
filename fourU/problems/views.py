@@ -32,6 +32,8 @@ def wysiwym_to_html(line, answers):
 	
 	>>> wysiwym_to_html('Problem #1: [% #a + #b = #sum %]', answers)
 	'Problem #1: <span class="math"> a + b = sum </span>'
+	>>> wysiwym_to_html('[% #good %] is better than [% #bad %].', answers)
+	'<span class="math"> good </span> is better than <span class="math"> bad </span>.'
 	
 	Any mathematical expressions inside [% %] are assumed to be typeset in TeX,
 	and will be converted to standard symbols.
@@ -98,8 +100,8 @@ def wysiwym_to_html(line, answers):
 	if search(r'#([\w_]+)', line):
 		line = sub(r'#([\w_]+)', r'\1', line)
 	# tell jsMath to parse TeX inside [% %]
-	if search(r'\[%(.*)%\]', line):
-		line = sub(r'\[%(.*)%\]', r'<span class="math">\1</span>', line)
+	if search(r'\[%(.*?)%\]', line):
+		line = sub(r'\[%(.*?)%\]', r'<span class="math">\1</span>', line)
 	
 	return line
 
