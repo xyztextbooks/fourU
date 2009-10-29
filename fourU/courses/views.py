@@ -58,6 +58,8 @@ def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum)
 	assignment = section.assignment_set.get(slug=assignmentSlug)
 	problem = assignment.problems.get(number=problemNum)
 	
+	data = {}
+	
 	if request.method == 'GET':
 		grade = ProblemGrade(problem=problem, user=request.user)
 		problemInstance = problem.instance
@@ -84,7 +86,9 @@ def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum)
 					answers[key[7:]] = value
 			
 			if problemInstance.is_correct(answers):
-				pass # FIXME: do something different
+				data['message'] = 'Hooray, you got it right!'
+			else:
+				data['message'] = ':( try again'
 		except:
 			raise # maybe do something else?
 		# only count the attempt if we didn't encounter a problem checking the answer
@@ -98,4 +102,5 @@ def problem_detail(request, courseSlug, sectionSlug, assignmentSlug, problemNum)
 	request.session['problemInstance'] = problemInstance
 	request.session['grade'] = grade
 	
-	return render_to_response('assignments/problem_detail.html', {'problem': problem})
+	data['problem'] = problem
+	return render_to_response('assignments/problem_detail.html', data)

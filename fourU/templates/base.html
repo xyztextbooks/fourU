@@ -28,6 +28,10 @@
 	{% block extra_css %}{% endblock %}
 </head>
 <body bgcolor="silver">
+	{% if message %}
+	<span id="message">{{message}}</span>
+	{% endif %}
+
     {% block content %}
     {% endblock %}
 </body>
