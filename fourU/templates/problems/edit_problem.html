@@ -79,7 +79,7 @@ function new_value(name) {
 			<a href="#" class="add-another">add another</a> \
 		</div> \
 	</div>');
-	$('textarea').append('#'+value);
+	$('textarea').val($('textarea').val() + '#'+value);
 	
 	var element = $('#secondary .expander:last');
 	
@@ -112,7 +112,7 @@ function new_answer(name) {
 			</div> \
 		</div> \
 	</div>');
-	$('textarea').append('[[answer_'+nextAnswerNumber+']]');
+	$('textarea').val($('textarea').val() + '[[answer_'+nextAnswerNumber+']]');
 	nextAnswerNumber++;
 	
 	var element = $('#secondary .expander:last');
